@@ -75,4 +75,16 @@
        echo "Név: {$student['name']}, Életkor: {$student['age']} <br>";
    };
 
+
+
+   // users tömb , ami lehetővé teszi az autentikációt
+   $users = 
+   [
+       "admin" => "admin123",
+       "user" => "user123", 
+         "guest" => "guest123"
+   ];
+   foreach($users as $username => $password){
+       echo "Felhasználónév: $username, Jelszó: $password <br>";
+   }  
 ?>

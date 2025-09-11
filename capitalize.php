@@ -3,10 +3,12 @@
 
 
  function capitalizeAll( array $names) : array {
-            $temmpAray=[];
+            /*$temmpAray=[];
     foreach($names as $name ){
         $temmpAray[] = mb_strtoupper($name);
-    }return $temmpAray;
+    }return $temmpAray;*/
+      return array_map("mb_strtoupper",$names);
+
 }
      $names = ["Pista","Jóska","Éva"];
     $capitalizedNames=capitalizeAll($names);

@@ -1,12 +1,15 @@
 <?php
-require 'App/helper.php';
+namespace App;
 
-/*use function Application\sayHello;  //fgv globális névtérbe importálása
+trait MyService {
+    use GreetingTrait, LoggerTrait;
 
-echo sayHello();*/
+    public function serve($name = "Guest") {
+        $this->log("$name bejelentkezett");
+        return $this->greet($name);
+    }
+}
 
-//echo \Application\sayHello();
 
-use Application;
-echo Application\sayHello();
+
 ?>

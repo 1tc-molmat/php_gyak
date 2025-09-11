@@ -1,0 +1,2 @@
+hozd létre az aplication namspace-t az App/Helper.php-ben , amiben legyen egy sayHello() fgv(-> Hello világ!)
+Hivd meg a fgv-t az index.php fájlból

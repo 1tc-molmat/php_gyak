@@ -10,6 +10,11 @@ function sum($a, $b) : int{
 
 $s1= sum(5,10);
 echo "{$s1}<br>";
-$s2 =sum("4","6");
+$s2 =sum("négy","6");
 echo $s2;
+
+function sayHello($name="Guest"){
+    return "Hello $name!"
+}
+echo sayHello("Pista");
 ?>

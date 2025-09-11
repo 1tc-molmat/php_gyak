@@ -17,8 +17,6 @@ var_dump($name);
 echo "Név: $name <br> Életkor: $age <br> Város: $city";
 define("PI",3.14);
 //adattípusok : string,integer,float,boolean,array,object,null
-$message = "egy";
-echo "Kiirva:" $message, "értéket. ", "<br>\n";
 echo "Kiirva: $message értéket, <br>\n";
 echo "Kiirva:" {$messagedarab}, "értéket. ", "<br>\n";
 
@@ -40,17 +38,6 @@ echo "Kiirva:" {$messagedarab}, "értéket. ", "<br>\n";
 //git config --global user.name "Név": felhasználónév beállítása
 //git config --global user.email : email cím beállítása
 
-/*
-    Ciklusok:
-        for
-        while
-        do while
-        foreach
-       
-     Termary operator:
-        (feltétel) ? érték1 : érték2
-        
-       Tömbök(indexelt,asszociatív,multidimenziós) 
-*/
+
 
 ?>

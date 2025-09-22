@@ -1,4 +1,5 @@
 <?php
+/*
     if (($_SERVER["REQUEST_METHOD"] === "POST") && isset($_POST["name"]) && ($_POST["name"])!=""){
         //itt dolgozom fel az űrlapot
         $name = $_POST["name"] ?? "ismeretlen";
@@ -13,7 +14,15 @@
         $password = $_GET["password"] ?? "";
         echo "Hello, $name";
     }
+*/
 
+
+//Ha get és post is lehet 
+if (isset($_REQUEST["name"])){
+    $name =htmlspecialchars ($_REQUEST["name"]);
+    $password = $_REQUEST["password"] ?? "";
+    echo "Hello, $name ($password) <hr>";
+}
 ?>
 
 <!DOCTYPE html>

@@ -1,64 +1,81 @@
 <?php
+//data source name
+$dsn = 'mysql:host=localhost;dbname=business_cards;charset=utf8';
+$user = 'root';
+$pass = '';
+try {
+    $pdo = new PDO($dsn, $user, $pass);
 
-/*1. Mysql
-CRUD: Create, Read, Update, Delete
-tfh:van egy cards táblám amiben van name,email,id mező
-backtick `, (alt gr + 7)
-1.MySQl
--READ: SELECT name,email FROM cards id=10;
--CREATE: INSERT INTO  cards (name,`email`) VALUES ('Tibi','tibi@mzsrk.hu');
--UPDATE: UPDATE cards SET email='tibi2025@mzsrk.hu' WHERE id=10;
--DELETE: DELETE FROM cards WHERE id=10;
-
-
-CREATE DATABASE business_cards;
-USE business_cards;
-
-
-Create TABLE cards(
-    id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) DEFAULT NULL
-    companyname VARCHAR(100) DEFAULT NULL,
-    phone VARCHAR(20) DEFAULT NULL,
-    photo VARCHAR(255) DEFAULT NULL,
-    status VARCHAR (20) DEFAULT NULL,
-    note TEXT NULL,
-) ENGINE =InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
-*/
+    //Hiba mód : exception dobása hiba esetén
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Sikeres csatlakozás\n";
+    //sql_injection($pdo);
+    checked_insert($pdo);
+} catch (PDOException $e) {
+    echo 'Kapcsolodasi hiba: ' . $e->getMessage();
+    exit();
+}
 
 
-//DATA SOURCE NAME
-$dsn='mysql:host=localhost;dbname=business_cards;charset=utf8';
-$user='root';
-$password='';
-try{
-    $pdo=new PDO($dsn,$user,$password);
-    $pdo->SetAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+function xss($pdo)
+{
+$name = "xyz";
+ $companyName = "xyz bt";
+ $phone = "123123123";
+ $email = "xyz@qwer.com";
+ $photo =null;
+ //$status =?
+ $note ="hivatasos pornoszinesz";
+
+/*$sql = "INSERT INTO cards(name, companyName,`phone`,`email`,`photo`,`note`)
+        VALUES ('$name', '$companyName', '$phone', '$email', '$photo', '$note')"; */
+
+//$pdo->exec($sql);
 
 
-    echo"Sikerees a kapcsolódás";
-    $name = "Mate";
-    $companyname = "Mate Kft.";
-    $phone = "+36 30 123 4567";
-    $email = "teszt@teszt.hu";
-    $photo = null;
-    //$status =?
-    $note = "Webfejlesztő";
-    $sql="INSERT INTO cards (`name`, `companyname`, `phone`,`email`, `photo`, `note`) VALUES('$name', '$companyname', '$phone', '$email', '$photo', '$note')";
-    //$pdo->exec($sql);
+$sql = "INSERT INTO cards(name, companyName,`phone`,`email`,`photo`,`note`)
+        VALUES (?, ?, ?, ?, ?, ?)";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$name, $companyName, $phone, $email, $photo, $note]);
 
-    //READ
-    $sql="SELECT * FROM cards WHERE id=11";
-    $result =$pdo->query($sql);
-    $card=$result->fetch(PDO::FETCH_ASSOC);
+/////
+$sql = "SELECT * FROM cards WHERE name = 'xyz'";
+$result = $pdo->query($sql);
+$card = $result->fetch(PDO::FETCH_ASSOC);
+
+echo "<br>";
+print_r($card);
+
+}
+ 
+function prepare_statement($pdo)
+{
+ $name_i = "' OR '1'='1";
+    $sql = "SELECT * FROM cards WHERE name = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$name_i]);
+    $card = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo "<br>";
     print_r($card);
 
 }
-catch(PDOException $ex)
+//Egy függvény checked_insert , minden mezöhöz egy string és ezt sql injection ellen és xss ellen is védi és ezt adjuk hozzá az adatbázishoz
+
+function checked_insert($pdo)
 {
-    echo "Kapcsolódási hiba: ".$ex->getMessage();
-    exit();
+    $name=htmlspecialchars("ezaz");
+    $companyname=htmlspecialchars("xyz");
+    $phone=htmlspecialchars("06301234567");
+    $email=htmlspecialchars("ezaz@citromail.hu");
+    $photo=null;
+    $note=htmlspecialchars("valami jegyzet");
+
+    $sql = "INSERT INTO cards(name, companyName,`phone`,`email`,`photo`,`note`)
+        VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$name, $companyname, $phone, $email, $photo, $note]);
+
 }
 
 ?>
